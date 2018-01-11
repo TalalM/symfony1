@@ -63,6 +63,14 @@ class sfMemcachedCache extends sfCache
           if (!$this->memcache->addServer($server['host'], $port, isset($server['persistent']) ? $server['persistent'] : true))
           {
             throw new sfInitializationException(sprintf('Unable to connect to the memcache server (%s:%s).', $server['host'], $port));
+          } else {
+              $this->memcache->setOption(Memcached::OPT_NO_BLOCK, true);
+              $this->memcache->setOption(Memcached::OPT_BINARY_PROTOCOL, true);
+              $this->memcache->setOption(Memcached::OPT_CONNECT_TIMEOUT,  1000);
+              $this->memcache->setOption(Memcached::OPT_POLL_TIMEOUT, 1000);
+              $this->memcache->setOption(Memcached::OPT_SEND_TIMEOUT, 5000);
+              $this->memcache->setOption(Memcached::OPT_RECV_TIMEOUT, 5000);
+              $this->memcache->setOption(Memcached::OPT_RETRY_TIMEOUT, 1);
           }
         }
       }
